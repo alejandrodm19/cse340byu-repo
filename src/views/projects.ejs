@@ -5,9 +5,23 @@
         <h1><%= title %></h1>
         <h2>Upcoming Service Projects</h2>
         <ul>
-            <li>Park Cleanup - Join us to clean up local parks and make them beautiful!</li>
-            <li>Food Drive - Help collect and distribute food to those in need.</li>
-            <li>Community Tutoring - Volunteer to tutor students in various subjects.</li>
+            <% if (projects && projects.length > 0) { %>
+            <% projects.forEach(project => { %>
+                <% 
+                    const projectDate = new Date(project.date);
+                    const formattedDate = projectDate.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                %>
+                <li>
+                    <strong><%= formattedDate %>:</strong> <%= project.title %> (<%= project.description %>)
+                </li>
+            <% }); %>
+        <% } else { %>
+            <li>No upcoming projects found at the moment.</li>
+        <% } %>
         </ul>
     </main>
     <%- include('partials/footer') %>  
