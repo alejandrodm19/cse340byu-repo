@@ -5,8 +5,30 @@
     <div class="project-details-card">
         <p class="description"><strong>Description:</strong> <%= projectDetails.description %></p>
         
-        <p class="meta-info"><strong>Date:</strong> <%= projectDetails.date %></p>
+        <p class="meta-info"><strong>Date:</strong> 
+            <% 
+                const projectDate = new Date(projectDetails.date);
+                const formattedDate = projectDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            %>
+            <%= formattedDate %>
+        </p>
         <p class="meta-info"><strong>Location:</strong> <%= projectDetails.location %></p>
+        
+        <p class="meta-info"><strong>Categories:</strong>
+            <% if (categories && categories.length > 0) { %>
+                <% categories.forEach(category => { %>
+                    <a href="/category/<%= category.category_id %>" class="category-tag" style="margin-right: 5px; padding: 2px 6px; background-color: #e0e0e0; border-radius: 4px; text-decoration: none; color: #333; font-size: 0.9em;">
+                        <%= category.name %>
+                    </a>
+                <% }); %>
+            <% } else { %>
+                <span>No categories assigned to this project.</span>
+            <% } %>
+        </p>
         
         <p class="organization-link">
             <strong>Partner Organization:</strong> 

@@ -1,21 +1,20 @@
- <%- include('partials/header') %>
-
+<%- include('partials/header') %>
 <main>
     <h1><%= title %></h1>
-    <h2>Categories</h2>
-        <ul>
-            <% if (categories && categories.length > 0) { %>
+    <h2>Available Categories</h2>
+    
+    <ul>
+        <% if (categories && categories.length > 0) { %>
             <% categories.forEach(category => { %>
                 <li>
-                    <strong><%= category.name %></strong>
+                    <a href="/category/<%= category.category_id %>">
+                        <strong><%= category.name %></strong>
+                    </a>
                 </li>
             <% }); %>
         <% } else { %>
             <li>No categories found in the database.</li>
         <% } %>
-        </ul>
-    
-
+    </ul>
 </main>
-
- <%- include('partials/footer') %>
+<%- include('partials/footer') %>
