@@ -31,4 +31,27 @@ const getProjectsByOrganizationId = async (organizationId) => {
       return result.rows;
 };
 
-export { getAllProjects, getProjectsByOrganizationId };
+const getUpcomingProjects = async () => {
+  const query = `
+    SELECT project_id, title, description, location, date, organization_id
+    FROM public.service_project
+    WHERE date >= CURRENT_DATE
+    ORDER BY date ASC
+    LIMIT $1;
+  `;
+  const result = await db.query(query, [5]);
+  return result.rows;
+};
+
+const getProjectDetails = async (projectId) => {
+  const query = `
+    SELECT project_id, title, description, location, date, organization_id
+    FROM public.service_project
+    WHERE project_id = $1;
+  `;
+  const queryParams = [projectId];
+  const result = await db.query(query, queryParams);
+  return result.rows[0];
+};
+
+export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails };

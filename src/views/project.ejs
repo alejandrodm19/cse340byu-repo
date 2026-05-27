@@ -1,0 +1,19 @@
+<%- include('partials/header') %>
+<main>
+    <h1><%= title %></h1>
+
+    <div class="project-details-card">
+        <p class="description"><strong>Description:</strong> <%= projectDetails.description %></p>
+        
+        <p class="meta-info"><strong>Date:</strong> <%= projectDetails.date %></p>
+        <p class="meta-info"><strong>Location:</strong> <%= projectDetails.location %></p>
+        
+        <p class="organization-link">
+            <strong>Partner Organization:</strong> 
+            <a href="/organization/<%= projectDetails.organization_id %>">
+                <%= projectDetails.organization_name %>
+            </a>
+        </p>
+    </div>
+</main>
+<%- include('partials/footer') %>
