@@ -7,6 +7,7 @@ import { getAllOrganizations } from '../models/organizations.js';
 import { createProject } from '../models/projects.js';
 import {body, validationResult} from 'express-validator';
 import { updateProject } from '../models/projects.js';
+import { isUserVolunteering } from '../models/volunteer.js';
 
 const projectValidation = [
     body('title')
@@ -45,8 +46,8 @@ const showProjectsPage = async (req, res) => {
 };
 
 const showProjectDetailsPage = async (req, res) => {
-    try {
-        // 1. Intentamos obtener el ID dinámico de la URL (Prueba tanto con projectId como con id)
+try {
+        // 1. Obtenemos el ID dinámico de la URL
         const projectId = req.params.projectId || req.params.id; 
         
         // 2. Buscamos los detalles del proyecto
@@ -56,24 +57,30 @@ const showProjectDetailsPage = async (req, res) => {
             return res.status(404).render('404', { title: 'Project Not Found' });
         }
 
-        // 3. Declaramos la variable al inicio del bloque para asegurar su existencia
+        // 3. Lógica de Voluntariado: Por defecto es falso (para usuarios invitados)
+        let isVolunteering = false;
+
+        // Si el usuario inició sesión, consultamos a la base de datos si ya participa en este proyecto
+        if (req.session && req.session.user) {
+            const userId = req.session.user.user_id;
+            isVolunteering = await isUserVolunteering(userId, projectId);
+        }
+
+        // 4. Intentamos obtener las categorías
         let categories = []; 
-        
         try {
-            // Intentamos llenar el array con la base de datos
             categories = await getCategoriesByProjectId(projectId);
         } catch (modelError) {
             console.error("⚠️ Error running getCategoriesByProjectId model function:", modelError);
-            // Si la consulta SQL falló por algún motivo, dejamos el array vacío [] 
-            // para que EJS NO se rompa y pinte "No categories assigned".
             categories = []; 
         }
         
-        // 4. Aseguramos el envío explícito de todas las variables requeridas
+        // 5. Enviamos TODOS los datos mapeados a la vista EJS
         res.render('project', { 
             title: projectDetails.title, 
             projectDetails: projectDetails,
-            categories: categories // Forzamos el puente de datos hacia EJS
+            categories: categories,
+            isVolunteering: isVolunteering // ◄--- ¡ESTO CONECTA EL BOTÓN CON LA VISTA!
         });
 
     } catch (error) {

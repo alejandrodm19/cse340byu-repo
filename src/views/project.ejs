@@ -37,6 +37,29 @@
             </a>
         </p>
     </div>
+
+    <% if (locals.isLoggedIn) { %>
+        <div class="volunteer-panel" style="margin-top: 20px; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+            <% if (locals.isVolunteering) { %>
+                <p class="status-msg" style="color: #2b7513; font-weight: bold; margin-bottom: 10px;">✓ You are volunteering for this project!</p>
+                <form action="/volunteer/remove" method="POST">
+                    <input type="hidden" name="project_id" value="<%= projectDetails.project_id %>">
+                    <input type="hidden" name="redirect_to" value="/project/<%= projectDetails.project_id %>">
+                    <button type="submit" class="btn btn-danger" style="background-color: #d9534f; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                        Cancel Volunteering
+                    </button>
+                </form>
+            <% } else { %>
+                <form action="/volunteer/add" method="POST">
+                    <input type="hidden" name="project_id" value="<%= projectDetails.project_id %>">
+                    <button type="submit" class="btn btn-primary" style="background-color: #0275d8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                        Volunteer for this Project
+                    </button>
+                </form>
+            <% } %>
+        </div>
+    <% } %>
+
     <div class="management-actions" style="margin-top: 20px;">
         <a href="/edit-project/<%= projectDetails.project_id %>" class="btn-edit" style="padding: 8px 16px; background-color: #0066cc; color: white; text-decoration: none; border-radius: 4px;">
             Edit Service Project

@@ -11,6 +11,28 @@
         </section>
     <% } %>
 
+        <h2>My Volunteered Service Projects</h2>
+    <% if (volunteeredProjects && volunteeredProjects.length > 0) { %>
+        <ul class="dashboard-project-list">
+            <% volunteeredProjects.forEach(project => { %>
+                <li>
+                    <div class="project-info">
+                        <a href="/projects/detail/<%= project.project_id %>"><strong><%= project.project_name %></strong></a>
+                    </div>
+                    <div class="project-actions">
+                        <form action="/volunteer/remove" method="POST" style="display:inline;">
+                            <input type="hidden" name="project_id" value="<%= project.project_id %>">
+                            <input type="hidden" name="redirect_to" value="/dashboard">
+                            <button type="submit" class="btn-link-delete">Remove</button>
+                        </form>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>You haven't signed up to volunteer for any projects yet. Check out open <a href="/projects">service projects</a>!</p>
+    <% } %>
+
     <section class="user-options">
         <h3>Standard Actions</h3>
         <p>Explore organizations and browse service opportunities.</p>

@@ -79,7 +79,6 @@ app.use((req, res, next) => {
   */
 app.use(router);
 
-
 // Test route for 500 errors
 app.get('/test-error', (req, res, next) => {
     const err = new Error('This is a test error');

@@ -31,6 +31,7 @@ import {showDashboard} from './controllers/users.js';
 import {checkAdmin} from './controllers/users.js';
 import {requireRole} from './controllers/users.js';
 import {showUsersManagementPage} from './controllers/users.js';
+import { handleAddVolunteer, handleRemoveVolunteer } from './controllers/volunteer.js';
 
 
 
@@ -65,6 +66,8 @@ router.post('/new-category', requireLogin, checkAdmin, processNewCategoryForm);
 router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
 router.get('/users', requireRole('admin'), showUsersManagementPage);
 router.get('/users', requireLogin, checkAdmin, showUsersManagementPage);
+router.post('/volunteer/add', requireLogin, handleAddVolunteer);
+router.post('/volunteer/remove', requireLogin, handleRemoveVolunteer);
 router.post('/new-organization', requireRole('admin'), processNewOrganizationForm);
 router.post('/login', processLoginForm);
 router.post('/register', processUserRegistrationForm);
