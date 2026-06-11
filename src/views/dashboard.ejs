@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+<main class="dashboard-container">
+    <h1>Welcome back, <%= name %>!</h1>
+    <p><strong>Your Account Email:</strong> <%= email %></p>
+
+    <% if (locals.isAdmin) { %>
+        <section class="admin-actions-panel">
+            <h2>Administrative Tools</h2>
+            <p>As an administrator, you have access to specialized management views.</p>
+            <a href="/users" class="btn-admin">Manage System Users</a>
+        </section>
+    <% } %>
+
+    <section class="user-options">
+        <h3>Standard Actions</h3>
+        <p>Explore organizations and browse service opportunities.</p>
+        <a href="/projects" class="btn-primary">View Active Projects</a>
+    </section>
+</main>
+<%- include('partials/footer') %>

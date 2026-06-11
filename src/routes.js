@@ -23,6 +23,17 @@ import {showEditProjectForm, processEditProjectForm} from './controllers/project
 import { showNewCategoryForm, processNewCategoryForm } from './controllers/categories.js';
 import { showEditCategoryForm, processEditCategoryForm } from './controllers/categories.js';
 import {categoryValidation} from './controllers/categories.js';
+import {showUserRegistrationForm, processUserRegistrationForm} from './controllers/users.js';
+import {processLoginForm, showLoginForm} from './controllers/users.js';
+import {processLogout} from './controllers/users.js';
+import {requireLogin} from './controllers/users.js';
+import {showDashboard} from './controllers/users.js';
+import {checkAdmin} from './controllers/users.js';
+import {requireRole} from './controllers/users.js';
+import {showUsersManagementPage} from './controllers/users.js';
+
+
+
 
 
 
@@ -45,6 +56,16 @@ router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.get('/edit-project/:id', showEditProjectForm);
 router.get('/new-category', showNewCategoryForm);
 router.get('/edit-category/:id', showEditCategoryForm);
+router.get('/register', showUserRegistrationForm);  
+router.get('/login', showLoginForm);
+router.get('/logout', processLogout);
+router.get('/dashboard', requireLogin, showDashboard);
+router.get('/new-category', requireLogin, checkAdmin, showNewCategoryForm);
+router.post('/new-category', requireLogin, checkAdmin, processNewCategoryForm);
+router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
+router.post('/new-organization', requireRole('admin'), processNewOrganizationForm);
+router.post('/login', processLoginForm);
+router.post('/register', processUserRegistrationForm);
 router.post('/new-category', categoryValidation, processNewCategoryForm);
 router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 router.post('/edit-project/:id', processEditProjectForm);
