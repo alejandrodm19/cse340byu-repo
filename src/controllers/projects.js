@@ -33,9 +33,8 @@ const projectValidation = [
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
 const showProjectsPage = async (req, res) => {
-    try {
+try {
         const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS);
-        
         const title = 'Upcoming Service Projects';
         
         res.render('projects', { title, projects });
