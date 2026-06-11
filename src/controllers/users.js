@@ -38,23 +38,34 @@ const { email, password } = req.body;
 
     try {
         const user = await authenticateUser(email, password);
-        if (user) {
-            req.session.user = user;
-            
-           
-            req.session.isAdmin = (user.role_name === 'admin'); 
 
-            req.flash('success', 'Login successful!');
-            
-            res.redirect('/dashboard'); 
-        } else {
+        if (!user) {
             req.flash('error', 'Invalid email or password.');
-            res.redirect('/login');
+            return res.redirect('/login');
         }
+
+       
+        req.session.user = {
+            user_id: user.user_id,
+            name: user.name, 
+            email: user.email,
+            role: user.role_name
+        };
+
+        if (user.role_name === 'admin') {
+            req.session.admin = req.session.user; 
+            req.session.isAdmin = true;
+        } else {
+            req.session.isAdmin = false;
+        }
+
+        req.flash('success', `Welcome back, ${user.name}!`);
+        return res.redirect('/dashboard');
+
     } catch (error) {
-        console.error('Error during login:', error);
+        console.error("Error processing login form:", error);
         req.flash('error', 'An error occurred during login.');
-        res.redirect('/login');
+        return res.redirect('/login');
     }
 };
 

@@ -1,6 +1,5 @@
 import * as volunteerModel from '../models/volunteer.js';
 
-// POST: Add user as a volunteer
 const handleAddVolunteer = async (req, res) => {
     const { project_id } = req.body;
     const user_id = req.session.user.user_id;
@@ -11,15 +10,14 @@ const handleAddVolunteer = async (req, res) => {
         
         return res.redirect(`/project/${project_id}`); 
     } catch (error) {
-        console.error(error);
+        console.error("Error in handleAddVolunteer:", error);
         req.flash('error', 'Could not process volunteer registration.');
         return res.redirect('/projects');
     }
 };
 
-// -- POST: Remove user as a volunteer
 const handleRemoveVolunteer = async (req, res) => {
-const { project_id, redirect_to } = req.body;
+    const { project_id, redirect_to } = req.body;
     const user_id = req.session.user.user_id;
 
     try {
@@ -28,7 +26,7 @@ const { project_id, redirect_to } = req.body;
         
         return res.redirect(redirect_to || `/project/${project_id}`);
     } catch (error) {
-        console.error(error);
+        console.error("Error in handleRemoveVolunteer:", error);
         req.flash('error', 'Could not remove volunteer record.');
         return res.redirect('/dashboard');
     }

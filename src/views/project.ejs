@@ -45,12 +45,16 @@
             <form action="/volunteer/remove" method="POST">
                 <input type="hidden" name="project_id" value="<%= projectDetails.project_id %>">
                 <input type="hidden" name="redirect_to" value="/project/<%= projectDetails.project_id %>">
-                <button type="submit" class="btn btn-danger">Cancel Volunteering</button>
+                <button type="submit" class="btn btn-danger" style="background-color: #d9534f; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                    Cancel Volunteering
+                </button>
             </form>
         <% } else { %>
             <form action="/volunteer/add" method="POST">
                 <input type="hidden" name="project_id" value="<%= projectDetails.project_id %>">
-                <button type="submit" class="btn btn-primary">Volunteer for this Project</button>
+                <button type="submit" class="btn btn-primary" style="background-color: #0275d8; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                    Volunteer for this Project
+                </button>
             </form>
         <% } %>
     </div>

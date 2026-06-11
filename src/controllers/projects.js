@@ -46,27 +46,24 @@ const showProjectsPage = async (req, res) => {
 };
 
 const showProjectDetailsPage = async (req, res) => {
-try {
-        // 1. Obtenemos el ID dinámico de la URL
+    try {
         const projectId = req.params.projectId || req.params.id; 
-        
-        // 2. Buscamos los detalles del proyecto
         const projectDetails = await getProjectDetails(projectId);
         
         if (!projectDetails) {
             return res.status(404).render('404', { title: 'Project Not Found' });
         }
 
-        // 3. Lógica de Voluntariado: Por defecto es falso (para usuarios invitados)
         let isVolunteering = false;
 
-        // Si el usuario inició sesión, consultamos a la base de datos si ya participa en este proyecto
-        if (req.session && req.session.user) {
-            const userId = req.session.user.user_id;
-            isVolunteering = await isUserVolunteering(userId, projectId);
+        if (req.session && (req.session.user || req.session.admin)) {
+            const currentUser = req.session.user || req.session.admin;
+            
+            if (currentUser && currentUser.user_id) {
+                isVolunteering = await isUserVolunteering(currentUser.user_id, projectId);
+            }
         }
 
-        // 4. Intentamos obtener las categorías
         let categories = []; 
         try {
             categories = await getCategoriesByProjectId(projectId);
@@ -75,12 +72,11 @@ try {
             categories = []; 
         }
         
-        // 5. Enviamos TODOS los datos mapeados a la vista EJS
         res.render('project', { 
             title: projectDetails.title, 
             projectDetails: projectDetails,
             categories: categories,
-            isVolunteering: isVolunteering // ◄--- ¡ESTO CONECTA EL BOTÓN CON LA VISTA!
+            isVolunteering: isVolunteering 
         });
 
     } catch (error) {
