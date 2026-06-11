@@ -63,6 +63,8 @@ router.get('/dashboard', requireLogin, showDashboard);
 router.get('/new-category', requireLogin, checkAdmin, showNewCategoryForm);
 router.post('/new-category', requireLogin, checkAdmin, processNewCategoryForm);
 router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
+router.get('/users', requireRole('admin'), showUsersManagementPage);
+router.get('/users', requireLogin, checkAdmin, showUsersManagementPage);
 router.post('/new-organization', requireRole('admin'), processNewOrganizationForm);
 router.post('/login', processLoginForm);
 router.post('/register', processUserRegistrationForm);
